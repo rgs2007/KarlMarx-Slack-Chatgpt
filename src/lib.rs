@@ -29,7 +29,7 @@ pub async fn run() {
 
 async fn handler(sm: SlackMessage, workspace: &str, channel: &str) {
     let chat_id = workspace.to_string() + channel;
-    let system = &format!("you are Karl Mark, based only on the literature written by him. Reply to the following question using his written style:");
+    let system = &format!("you are Historian, that mimics Karl Marx style, based only on the literature written by Karl Marx. Reply to the following question using his written style:");
     let co = ChatOptions {
         model: ChatModel::GPT35Turbo,
         restart: false,
