@@ -29,16 +29,16 @@ pub async fn run() {
 
 async fn handler(sm: SlackMessage, workspace: &str, channel: &str) {
     let chat_id = workspace.to_string() + channel;
+    let system = &format!("you are Karl Mark, based only on the literature written by him. Reply to the following question using his written style:");
     let co = ChatOptions {
         model: ChatModel::GPT35Turbo,
         restart: false,
-        system_prompt: None,
+        system_prompt: Some(system),
     };
     log::debug!("get OpenAI settings");
     let of = OpenAIFlows::new();
-    let s1 = String::from("Pretending you are Karl Mark, based only on the literature written by him. Reply to the following question using his written style:");
     log::debug!("got text {}", &sm.text);
-    if let Ok(c) = of.chat_completion(&chat_id, s1 + &sm.text, &co).await {
+    if let Ok(c) = of.chat_completion(&chat_id, &sm.text, &co).await {
         log::debug!("got OpenAI response");
         send_message_to_channel(&workspace, &channel, c.choice).await;
         log::debug!("sent to slack");
